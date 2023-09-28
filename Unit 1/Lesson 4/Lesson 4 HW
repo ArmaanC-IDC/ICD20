@@ -1,0 +1,72 @@
+#Q1, Greeting message
+print()
+print("Hello "+str(input("enter your name: ")) + "!")
+print()
+
+#Q2, Simple Math
+print()
+x = int(input("Enter a number without decimals: "))
+y = int(input("Enter a number without decimals: "))
+print(f"Sum: {x+y}")
+print(f"Difference: {x-y}")
+print(f"Product: {x*y}")
+print(f"Quotient: {x/y}")
+print()
+
+#Q3, Temp Converter
+print()
+C = float(input("Enter a temp in C: "))
+print(f"The temp if F is {(C*9/5)+32}")
+print()
+
+#Q4 Personal Info
+print()
+name = input("What is your name? ")
+age = input("What is your age?")
+city = input("What is your city")
+print(f"Your name is {name}, your age is {age}, your city is {city}")
+
+#Q5, Area Convert
+print()
+x = float(input("What is the length? "))
+y = float(input("what is the width? "))
+print(f"The area is {x*y}")
+print()
+
+#Q6, Conversion Rate
+print()
+x = float(input("How much in CAD? "))
+print(f"The amount in USD is {x*0.75}")
+print()
+
+#Q7, Uppercase names
+print()
+fname = input("What is your first name? ")
+lname = input("Qhat is your last name? ")
+print(f"Hi! {str.upper(fname)} {str.upper(lname)}!")
+print()
+
+#Q8, Shopping list total
+print()
+i1 = float(input("how mush is item 1? "))
+i2 = float(input("how mush is item 2? "))
+i3 = float(input("how mush is item 3? "))
+print(f"The total price is ${round((i1+i2+i3), 2)*1.08}.")
+print()
+
+#Q9, Convert days to hours
+print()
+days = float(input("How many days? "))
+print(f"{days} days is {int(days*24)} hours.")
+print()
+
+#Q10, Speed calculation
+print()
+km = float(input("What is the distance? (in km) "))
+h = float(input("How many hours? "))
+print(f"The speed is {int(km/h)} km/h")
+
+
+
+
+

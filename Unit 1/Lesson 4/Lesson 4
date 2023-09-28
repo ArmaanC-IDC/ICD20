@@ -1,0 +1,5 @@
+#user_input = input("Enter your age: ")
+#age = int(user_input)
+#print (f"Hello, {age}!")
+
+print("you will be "+str(int((input("enter your age: ")))+1)+" in 1 year")
