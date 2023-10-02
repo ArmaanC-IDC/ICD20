@@ -16,4 +16,3 @@ print()
 print(f"The wall area is {wsa} meters cubed")
 print(f"You will need {b_required} bricks.")
 print(f"This will cost ${b_cost}.")
-#seeing if this works
