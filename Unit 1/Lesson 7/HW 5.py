@@ -17,3 +17,4 @@ print(f"{city:<15}{population:<15}{area:<15}")
 print(f"{city1:<15}{population1:<15}{area1:<15}")
 print(f"{city2:<15}{population2:<15}{area2:<15}")
 print(f"{city3:<15}{population3:<15}{area3:<15}")
+
