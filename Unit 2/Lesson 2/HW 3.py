@@ -1,8 +1,10 @@
 def print_triangle(c,h):
-    while h>0:
+    for _ in range(h):
         print(f"{h*c}")
         h = h-1
 
-print_triangle("x",10)
+a=input("character: ")
+b=int(input("intager number: "))
+print_triangle("a",b)
 
 
