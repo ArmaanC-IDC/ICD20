@@ -1,4 +1,4 @@
-def multiply(n1, n2):
+'''def multiply(n1, n2):
     if isinstance(n1,(int,float)) and isinstance(n2,(int,float)):
         return n1*n2
     else:
@@ -6,5 +6,5 @@ def multiply(n1, n2):
 
 n1 = 10
 n2 = 5
-print(f"The product of {n1} and {n2} is {multiply(n1,n2)}")
+print(f"The product of {n1} and {n2} is {multiply(n1,n2)}")'''
 
