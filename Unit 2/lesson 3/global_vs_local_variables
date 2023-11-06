@@ -1,0 +1,19 @@
+'''global_book = "Science Encyclopedia" #declared outside a function, so it is global and exists everywhere in the program
+
+def section_book():
+    local_book = "Chemistry Handbook" #declared in a function, so it only exists in the function
+    print(f"In the section we have the {global_book} and the {local_book}")
+
+section_book()
+
+print(f"In the library we still have the {global_book}")'''
+
+
+x=8
+if x>0:
+    inside_if = "This was created in the 'if' statment"
+    print(inside_if)
+else:
+    inside_if = "This variable is empty"
+
+print(inside_if)
