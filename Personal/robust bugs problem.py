@@ -32,6 +32,7 @@ def display_table(bug1, count1, bug2, count2, bug3, count3):
     print("="*40)
     print(f"{'Total':<10}{t:>10}{'100%':>20}")
 
+
 print()
 while True:
     bug1,count1 = input_bug_type_and_count()
@@ -41,4 +42,6 @@ while True:
         print("Everything cannot be 0")
     else:
         break
+print()
+print("This table is rounded to 2 decimals")
 display_table(bug1,int(count1),bug2,int(count2),bug3,int(count3))

@@ -9,3 +9,4 @@ def last_3_letters(s):
         return s[a-3:a]
     
 print(last_3_letters(input("string: ")))
+
