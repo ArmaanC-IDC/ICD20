@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 from random import randint
 pygame.init()   
+
 screen = pygame.display.set_mode((1000, 500))
 clock = pygame.time.Clock()
 
