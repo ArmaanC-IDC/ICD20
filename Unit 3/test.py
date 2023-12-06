@@ -33,12 +33,3 @@ list = [1, 2, 3, 4]
 print(list)
 '''
 
-
-def pricing(cups_lemonade,cup_price):
-    if cups_lemonade>50 or cups_lemonade<3:
-        return "invalid input please try again."
-    if cup_price>50 or cup_price<3:
-        return "be reasonable with your pricing"
-    return cups_lemonade,cup_price
-
-print(pricing(61, 80))

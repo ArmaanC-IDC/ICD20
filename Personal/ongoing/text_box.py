@@ -15,6 +15,8 @@ def get_text_input(event, text='', color=(255, 255, 255)):
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_BACKSPACE:
             text = text[:-1]
+        elif event.key==pygame.K_RETURN:
+            return text
         else:
             text += event.unicode
 

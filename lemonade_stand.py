@@ -9,43 +9,38 @@ def get_weather():
         weather = "cloudy"
     return weather
 
-def customer_calculation(weather):
+def customer_calculation(weather, signs):
     if weather=="sunny":
         num_of_customers = random.randint(20,40)
     elif weather=="hot and dry":
         num_of_customers = random.randint(30,50)
     else:
         num_of_customers = random.randint(10,30)
-    return num_of_customers
+    multiplier = (signs/10)+1
+    return num_of_customers*multiplier
 
-def get_user_inputs(weather):
+def get_user_inputs(weather, assets):
     print(f"The weater is {weather}")
     print()
     while True:
-        try:
-            num_of_lemonades = int(input("How many cups of lemonade do you want to make?"))
-            if num_of_lemonades>=0:
-                break
-            else:
-                print("Invalid input. The number cannot be negative")
+        while True:
+            try:
+                num_of_lemonades = int(input("How many cups of lemonade do you want to make?"))
+                num_of_signs = int(input("How many signs do you want to make?"))
+                if num_of_lemonades>=0 and num_of_signs>=0:
+                    break
+                else:
+                    print("Invalid input. The number cannot be negative")
+                    print()
+            except ValueError:
+                print("Invalid input. Please input a number")
                 print()
-        except ValueError:
-            print("Invalid input. Please input a number")
-            print()
-    
-    while True:
-        try:
-            num_of_signs = int(input("How many signs do you want to make?"))
-            if num_of_signs>=0:
-                break
-            else:
-                print("Invalid input. The number cannot be negative")
-                print()
-        except ValueError:
-            print("Invalid input. Please input a number")
-            print()
+        if num_of_lemonades*2 + num_of_signs*15>assets:
+            print("you don't have enough money")
+        else:
+            return num_of_lemonades,num_of_signs
 
-    return num_of_lemonades, num_of_signs
+    
 
 def get_price(weather):
     if weather=="cloudy": price = random.randint(5,15)
@@ -55,21 +50,29 @@ def get_price(weather):
 
 def get_profit(lemonade_cups, signs, customer_num, price):
     if lemonade_cups>=customer_num:
-        print("first")
         return (customer_num*price)-(lemonade_cups*2)-(signs*15)
     else:
-        print("second")
         return (lemonade_cups*price)-(lemonade_cups*2)-(signs*15)
     
-def main():
-    total = 0
+def game_control():
     while True:
+        try:
+            return bool(input("do you want to keep going?"))
+        except ValueError:
+            print("invalid input")
+
+def main():
+    total = 200
+    day_number = 0
+    while True:
+        day_number+=1
+        print(f"it is day {day_number}")
         weather = get_weather()
-        lemonade_cups, signs = get_user_inputs(weather)
-        customer_num = customer_calculation(weather)
+        lemonade_cups, signs = get_user_inputs(weather, total)
+        customer_num = customer_calculation(weather, signs)
         price = get_price(weather)
         day_profit = get_profit(lemonade_cups, signs, customer_num, price)
-        print(f"you made {day_profit} cents")
+        print(f"you made {day_profit} cents today")
         total+=day_profit
-        print(f"your total profit is {total}")
+        print(f"you have {total} cents in total")
 main()
