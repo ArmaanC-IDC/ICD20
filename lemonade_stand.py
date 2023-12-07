@@ -1,6 +1,10 @@
 import random
+#get weather just returns a random weather. sunny, hot and dry, or cloudy
 def get_weather():
+    #gets a random value
     weather = random.randint(1,5)
+
+    #checks what that value
     if weather==1:
         weather = "sunny"
     elif weather==2:
@@ -9,16 +13,19 @@ def get_weather():
         weather = "cloudy"
     return weather
 
+#randomizes a customer number based on the weather
 def customer_calculation(weather, signs):
     if weather=="sunny":
         num_of_customers = random.randint(20,40)
-    elif weather=="hot and dry":
+    elif weather=="hot and dry": 
         num_of_customers = random.randint(30,50)
     else:
         num_of_customers = random.randint(10,30)
     multiplier = (signs/10)+1
-    return num_of_customers*multiplier
+    return round(num_of_customers*multiplier,0)
 
+#asks the user for their inputs and makes sure they have enough money
+#try means do whatever is in this block, and except ValueError means if you get a ValueError go here
 def get_user_inputs(weather, assets):
     print(f"The weater is {weather}")
     print()
@@ -40,27 +47,21 @@ def get_user_inputs(weather, assets):
         else:
             return num_of_lemonades,num_of_signs
 
-    
-
+#randomizes a price based on the weather
 def get_price(weather):
     if weather=="cloudy": price = random.randint(5,15)
     elif weather=="sunny": price = random.randint(15,25)
     elif weather=="hot and dry": price = random.randint(25,35)
     return price
 
+#calculates profit
 def get_profit(lemonade_cups, signs, customer_num, price):
     if lemonade_cups>=customer_num:
         return (customer_num*price)-(lemonade_cups*2)-(signs*15)
     else:
         return (lemonade_cups*price)-(lemonade_cups*2)-(signs*15)
-    
-def game_control():
-    while True:
-        try:
-            return bool(input("do you want to keep going?"))
-        except ValueError:
-            print("invalid input")
 
+#main calls all the functions and prints the profit, amount made that day, and the day number
 def main():
     total = 200
     day_number = 0
@@ -72,6 +73,8 @@ def main():
         customer_num = customer_calculation(weather, signs)
         price = get_price(weather)
         day_profit = get_profit(lemonade_cups, signs, customer_num, price)
+        print(f"there were {customer_num} customers")
+        print()
         print(f"you made {day_profit} cents today")
         total+=day_profit
         print(f"you have {total} cents in total")
