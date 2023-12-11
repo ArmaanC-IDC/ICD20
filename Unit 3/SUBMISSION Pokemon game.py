@@ -1,5 +1,3 @@
-#TO DO
-#Ask Mr. Conrad if pokemon_battle can have another peramiter called enemy?
 import random
 
 # name, health, attacks 1 2 and 3, defence
