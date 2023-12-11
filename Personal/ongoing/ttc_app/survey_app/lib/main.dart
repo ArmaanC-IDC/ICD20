@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,21 +14,23 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: const HomePage(),
       routes: {
-        '/report': (context) => ReportPage(),
-        '/view': (context) => ViewPage(),
+        '/report': (context) => const ReportPage(),
+        '/view': (context) => const ViewPage(),
       },
     );
   }
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: const Text('Home Page'),
       ),
       body: Center(
         child: Column(
@@ -36,14 +40,14 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/report');
               },
-              child: Text('Go to Report Page'),
+              child: const Text('Go to Report Page'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/view');
               },
-              child: Text('Go to View Page'),
+              child: const Text('Go to View Page'),
             ),
           ],
         ),
@@ -53,25 +57,27 @@ class HomePage extends StatelessWidget {
 }
 
 class ReportPage extends StatelessWidget {
+  const ReportPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Report Page'),
+        title: const Text('Report Page'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('What is the location?'),
-            SizedBox(height: 20),
+            const Text('What is the location?'),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Implement logic to save the response
                 // For now, navigate back to the home page
                 Navigator.pop(context);
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),
@@ -81,13 +87,15 @@ class ReportPage extends StatelessWidget {
 }
 
 class ViewPage extends StatelessWidget {
+  const ViewPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Page'),
+        title: const Text('View Page'),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

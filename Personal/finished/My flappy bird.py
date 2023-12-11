@@ -42,7 +42,7 @@ score = 0
 score_text = font.render(str(score), True, (0,0,0))
 score_rect = score_text.get_rect(midbottom = (500, 250))
 
-scale_factor = 10
+scale_factor = 50
 velocity = 0
 game_on = True
 while True:

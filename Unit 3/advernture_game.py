@@ -7,10 +7,8 @@ def choose_superhero():
     character = input("what class would you like to be? ")
     player_name = input("what is your character's name? ")
     return character, player_name
-
 def game_intro(player_superhero):
     print(f"Welcome {player_superhero}, to the world of Gorlan! You will be tasked with ridding this world of the black lord Morgorath")
-
 def make_decision():
      print("Morgorath is attacking the castle! Do you go stop him, or seek help from Sir. Digby the knight")   
      decision = input("1 for face him, 2 for get help")  
@@ -19,17 +17,14 @@ def make_decision():
             return decision
         else:
             print()
-
 def health_managment(current_health, damage_taken):
     return current_health-damage_taken
-
 def superhero_mission(action, player_superhero):
     function_score = score
     if action=="1":
         if player_superhero=="1":
             print("You face the black lord, and your arrows go through his heart. You return victorious")
             function_score +=10
-
         else:
             print("you find the black lord armed and ready for your attack. Prepare to fight")
             running = True
@@ -52,8 +47,7 @@ def superhero_mission(action, player_superhero):
                         function_score-=10
                     running = False
                 else:
-                    print("invalid input")
-                    
+                    print("invalid input")        
     elif action=="2":
         if player_superhero=="1":
             print("You and Sir Digby find Morgorath occupying the capitol. He has the royal army at his disposal, and you stand no chance. Neither of you return home")

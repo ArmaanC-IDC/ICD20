@@ -4,29 +4,31 @@ import 'view_page.dart';
 class ReportPage extends StatelessWidget {
   final TextEditingController locationController = TextEditingController();
 
+  ReportPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Report Page'),
+        title: const Text('Report Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('What is the location of the stuff?'),
-            SizedBox(height: 20),
+            const Text('What is the location of the stuff?'),
+            const SizedBox(height: 20),
             TextField(
               controller: locationController,
-              decoration: InputDecoration(labelText: 'Location'),
+              decoration: const InputDecoration(labelText: 'Location'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 submitResponse(context);
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),

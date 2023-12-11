@@ -3,9 +3,9 @@
 import random
 
 # name, health, attacks 1 2 and 3, defence
-squirtle = ["Squirtle", 225, 50, 70, 90, 30]
-bulbasaur = ["Bulbasaur", 250, 50, 60, 90, 40]
-mewtwo = ["MewTwo", 300, 80, 90, 100, 50]
+squirtle = ["Squirtle", 225, 500, 700, 900, 30]
+bulbasaur = ["Bulbasaur", 250, 500, 600, 900, 40]
+mewtwo = ["MewTwo", 300, 800, 900, 1000, 50]
 score = 0
 
 #Task 1 (Pokemon Selection)
@@ -120,13 +120,26 @@ def pokemon_battle(action, player_pokemon, enemy):
     #if the player chooses to catch
     elif action == "2":
         #random chance if the catch is succesful or not. goes down as your health goes down
-        catch_percent = (100/player_pokemon[4])*100
+        catch_percent = (100/player_pokemon[4])*10
         if random.randint(0, 100)<catch_percent:
             print("The catch was successful!!")
             new_score = new_score + 100
             player_pokemon[4]=False
         else:
             print("Sorry, the catch failed")
+            enemy_attack = random.randint(2, 4)
+            enemy_damage = (enemy[enemy_attack]*10)/player_pokemon[5]
+            player_pokemon[4] = manage_health(player_pokemon[4], enemy_damage)
+            #prints your health
+            if player_pokemon[4]<=0:
+                print(f"{player_pokemon[0]} died.")
+                print()
+                new_score -=10
+                player_pokemon[4] = False
+            else:
+                print(f"{player_pokemon[0]} took {enemy_damage} damage! It now has {player_pokemon[4]} health.")
+                print()
+    
     return player_pokemon, new_score
 
 def print_score(score, player_pokemon):
