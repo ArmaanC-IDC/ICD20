@@ -76,13 +76,23 @@ def factorial():
         total*=num
         num-=1
     print(total)
-clear()
-# print_numbers()
-# even_numbers()
-# odd_nums()
-# backward_nums()
-# backward_even_nums()
-# backward_odd_nums()
-# sum_of_nums()
-# backward_string()
-factorial()
+'''clear()
+print_numbers()
+even_numbers()
+odd_nums()
+backward_nums()
+backward_even_nums()
+backward_odd_nums()
+sum_of_nums()
+backward_string()
+factorial()'''
+
+
+def remove_vowels(str):
+    new_s = ''
+    vowels="aeiou"
+    for i in range(0,len(str)):
+        if not str[i].lower() in vowels:
+            new_s +=str[i]
+    print(new_s)
+remove_vowels("aBCdeFgHijKLmNopQrsTuvwXyZ")

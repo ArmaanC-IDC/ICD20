@@ -4,15 +4,15 @@ import random
 
 pygame.init()
 
-width, height = 600, 600  # Larger screen
+width, height = 300, 300  # Larger screen
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Snake Game")
 
-snake = [(300, 300)]
+snake = [(150, 150)]
 snake_dir = (1, 0)  # Constant movement to the right
 snake_speed = 10
 
-food = (random.randint(0, width - 10), random.randint(0, height - 10))
+food = (random.randint(10, width - 10), random.randint(10, height - 10))
 score = 0
 level = 1
 
@@ -34,7 +34,7 @@ def game_over():
         draw_text(f"Score: {score}", width // 2 - 50, height // 2, (0, 255, 0))  # Green score text
         draw_text("Press ESC to exit", width // 2 - 120, height // 2 + 50, (0, 0, 255))  # Blue exit text
 
-        pygame.display.flip()
+        pygame.display.update()
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:

@@ -32,7 +32,8 @@ def choose_pokemon():
 
 #Task 2 (Game Introduction)
 def game_intro(player_pokemon):
-    print(f"Welcome {player_pokemon[6]} to the World of Pokemon. You and your partner {player_pokemon[0]} are at the start of a long journey to become a Pokemon Trainer.")
+    print(f"Welcome {player_pokemon[6]} to the World of Pokemon. You and your partner {player_pokemon[0]} \
+are at the start of a long journey to become a Pokemon Trainer.")
     print("This jounery won't be easy, it will be challenging, but you must persevere. Goodluck on your journey!")
     print()
 
