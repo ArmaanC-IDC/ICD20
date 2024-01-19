@@ -1,6 +1,1 @@
-import random
-l = 5
-string = ''
-for i in range(l):
-    string += str(random.randint(1,9))
-print(string)
+print(round(600/191,10000000))

@@ -25,6 +25,9 @@ def sum13(nums):
     return sum(new_nums)/len(new_nums)
 
       
-      
+def function(l):
+   print(l)
+
+l = [0,1,2,3]   
 
 print(sum13([13]))

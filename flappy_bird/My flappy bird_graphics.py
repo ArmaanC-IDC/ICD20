@@ -4,11 +4,10 @@ def main():
     from random import randint
     pygame.init()
 
-    screen = pygame.display.set_mode((1000, 500))
+    screen = pygame.display.set_mode((800, 500))
     clock = pygame.time.Clock()
 
-    pipe_low1 = pygame.Surface((50,400))
-    pipe_low1.fill((55,255,55))
+    pipe_low1 = pygame.image.load("flappy_bird/low_pipe.png")
     pipe_low_rect1 = pipe_low1.get_rect(topright = (0, 400))
 
     pipe_top1 = pygame.Surface((50,400))
@@ -17,16 +16,14 @@ def main():
 
     height = randint(200,300)
 
-    pipe_low2 = pygame.Surface((50,400))
-    pipe_low2.fill((55,255,55))
-    pipe_low_rect2 = pipe_low2.get_rect(topright = (1800, height))
+    pipe_low2 = pygame.image.load("flappy_bird/low_pipe.png")
+    pipe_low_rect2 = pipe_low2.get_rect(topright = (1400, height))
 
     pipe_top2 = pygame.Surface((50,400))
     pipe_top2.fill((55,255,55))
-    pipe_top_rect2 = pipe_top2.get_rect(bottomright = ((1800, height-200)))
+    pipe_top_rect2 = pipe_top2.get_rect(bottomright = ((1400, height-200)))
 
-    player = pygame.Surface((50,50))
-    player.fill((0,0,0))
+    player = pygame.image.load("flappy_bird/bird_wings_down.png")
     player_rect = player.get_rect(bottomleft = (50,50))
 
     font = pygame.font.Font(None, 50)
@@ -68,8 +65,8 @@ def main():
 
             #recycles them when they get to the end
             if pipe_low_rect1.x<-50: 
-                height = randint(200,400)
-                pipe_low_rect1.x = 1050
+                height = randint(250,450)
+                pipe_low_rect1.x = 850
                 pipe_low_rect1.y = height
                 pipe_top_rect1.y = height-600
                 score += 1
@@ -79,8 +76,8 @@ def main():
 
             #recycles them when they get to the end
             if pipe_low_rect2.x<-50: 
-                height2 = randint(200,400)
-                pipe_low_rect2.x = 1050
+                height2 = randint(250,450)
+                pipe_low_rect2.x = 850
                 pipe_low_rect2.y = height2
                 pipe_top_rect2.y = height2-600
                 scale_factor+=0.5
