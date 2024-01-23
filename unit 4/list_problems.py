@@ -1,3 +1,4 @@
+import math
 def average_len(l):
     total = 0
     for element in l:
@@ -51,14 +52,34 @@ def pos_neg(l):
             neg_list.append(element)
     return pos_list, neg_list
 
-def is_fibonacci(sequence):
+def fibonacci(sequence):
     if len(sequence) < 3:
-        return False  # Fibonacci sequence must have at least 3 numbers
+        return False
 
     for i in range(2, len(sequence)):
-        if sequence[i - 2] + sequence[i - 1] != sequence[i]:
+        if sequence[i-2] + sequence[i-1] != sequence[i]:
             return False
     return True
+
+def square_roots(list):
+    new_list = []
+    for i in range(len(list)):
+        new_list.append(round(math.sqrt(list[i]),0))
+    return new_list
+
+def running_average(list):
+    total = 0
+    new_list = []
+    for i in range(1,len(list)+1):
+        total +=list[i-1]
+        new_list.append(total/i)
+    return new_list
+
+def cons_pair(list):
+    for i in range(len(list)-1):
+        if list[i+1] - list[i]==1:
+            return "diff of 1"
+    return "no diff of 1"
 
 #print(average_len(['asdf','asd','asdfg']))
 #print(pal_count(['abcba','asdfg','123321']))
@@ -66,4 +87,7 @@ def is_fibonacci(sequence):
 #print(vowel_count(['aedfhf','back']))
 #print(alternate_upper(['abc', 'def']))
 #print(pos_neg([1,-3,6,-3,9]))
-print(is_fibonacci([1,1,2,3,5,8,13]))
+#print(fibonacci([1,1,2,3,5,8,13]))
+#print(square_roots([4,9,16,23,25]))
+#print(running_average([2,4,6]))
+print(cons_pair([1,2,5,7,9]))
