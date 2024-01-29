@@ -53,7 +53,7 @@ def display_top_10_in_category(category, names, hits, runs, rbis):
         done = True
     else:
         print(f"{category} must be either 'runs', 'hits', or 'rbis")
-        done = False
+        done = False #this is complicated
     if done:
        names_copy = names
        names_copy, list = get_highest_player('first', names_copy, category, list)
@@ -67,7 +67,11 @@ def display_top_10_in_category(category, names, hits, runs, rbis):
        names_copy, list = get_highest_player('9th', names_copy, category, list)
        names_copy, list = get_highest_player('10th', names_copy, category, list)
 
-
+def add_new_player(names,hits,runs,rbis):
+    names.append(input("what is your player's name? "))
+    hits.append(input("what is your player's hits? "))
+    runs.append(input("what is your player's runs? "))
+    rbis.append(input("what is your player's rbis? "))
 
 names, hits, runs, rbis = read_baseball_data(file_path)
 
