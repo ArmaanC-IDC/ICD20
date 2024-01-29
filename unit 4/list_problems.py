@@ -90,4 +90,4 @@ def cons_pair(list):
 #print(fibonacci([1,1,2,3,5,8,13]))
 #print(square_roots([4,9,16,23,25]))
 #print(running_average([2,4,6]))
-print(cons_pair([1,2,5,7,9]))
+#print(cons_pair([1,2,5,7,9]))
