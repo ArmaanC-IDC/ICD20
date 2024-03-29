@@ -7,7 +7,7 @@ def main():
     screen = pygame.display.set_mode((800, 500))
     clock = pygame.time.Clock()
 
-    pipe_low1 = pygame.image.load("flappy_bird/low_pipe.png")
+    pipe_low1 = pygame.image.load("flappy_bird_graphics/low_pipe.png")
     pipe_low_rect1 = pipe_low1.get_rect(topright = (0, 400))
 
     pipe_top1 = pygame.Surface((50,400))
@@ -16,14 +16,14 @@ def main():
 
     height = randint(200,300)
 
-    pipe_low2 = pygame.image.load("flappy_bird/low_pipe.png")
+    pipe_low2 = pygame.image.load("flappy_bird_graphics/low_pipe.png")
     pipe_low_rect2 = pipe_low2.get_rect(topright = (1400, height))
 
     pipe_top2 = pygame.Surface((50,400))
     pipe_top2.fill((55,255,55))
     pipe_top_rect2 = pipe_top2.get_rect(bottomright = ((1400, height-200)))
 
-    player = pygame.image.load("flappy_bird/bird_wings_down.png")
+    player = pygame.image.load("flappy_bird_graphics/bird_wings_down.png")
     player_rect = player.get_rect(bottomleft = (50,50))
 
     font = pygame.font.Font(None, 50)
@@ -38,7 +38,7 @@ def main():
 
     score = 0
     score_text = font.render(str(score), True, (0,0,0))
-    score_rect = score_text.get_rect(midbottom = (500, 250))
+    score_rect = score_text.get_rect(topleft = (0, 0))
 
     scale_factor = 10
     velocity = 0
@@ -51,6 +51,9 @@ def main():
                     exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
+                        velocity = -15*((scale_factor-3)/7)
+                if event.type==pygame.KEYDOWN:
+                    if event.key==pygame.K_UP:
                         velocity = -15*((scale_factor-3)/7)
                 
             velocity += (scale_factor-7)/3
@@ -91,8 +94,7 @@ def main():
                 game_on = False
 
             score_text = font.render(str(score), True, (0,0,0))
-            score_rect = score_text.get_rect(topright = (950, 50))
-                
+            score_rect = score_text.get_rect(topleft = (0, 0))
             screen.blit(pipe_low2, pipe_low_rect2)
             screen.blit(pipe_top2, pipe_top_rect2)
             screen.blit(pipe_low1, pipe_low_rect1)

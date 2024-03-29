@@ -1,30 +1,47 @@
-n = int(input("Enter number of peppers Ron has put into the chilli: "))
+import pygame
 
-poblano = 1500
-mirasol = 6000
-serrano = 15500
-cayenne = 40000
-thai = 75000
-habanero = 125000
+# Initialize Pygame
+pygame.init()
 
-total_heat = 0
+# Set up the screen
+SCREEN_WIDTH = 400
+SCREEN_HEIGHT = 200
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Countdown Timer")
 
-for i in range(n):
-    input = input("Enter the name of the pepper Ron has used: ")
-    if input == "poblano":
-        sum_of_chili = total_heat + poblano
-    elif input == "mirasol":
-        sum_of_chili = total_heat + mirasol
-    elif input == "serrano":
-        sum_of_chili = total_heat + serrano
-    elif input == "cayenne":
-        sum_of_chili = total_heat + cayenne
-    elif input == "thai":
-        sum_of_chili = total_heat + thai
-    elif input == "habanero":
-        sum_of_chili = total_heat + habanero
-    else:
-        break
+# Define game variables
+clock = pygame.time.Clock()
+font = pygame.font.SysFont(None, 48)
+time_remaining = 10  # Initial time in seconds
 
-total = total_heat
-print(sum_of_chili)
+# Game loop
+running = True
+while running:
+    screen.fill('WHITE')
+
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Control the frame rate
+    # Update game elements
+    time_text = font.render(f"Time: {int(time_remaining)}", True, 'BLACK')
+    screen.blit(time_text, (SCREEN_WIDTH // 2 - time_text.get_width() // 2, SCREEN_HEIGHT // 2 - time_text.get_height() // 2))
+
+    # Decrease the time_remaining by the amount of time that has passed since the last frame
+    time_remaining -= clock.get_time() / 1000  # Convert milliseconds to seconds
+
+    # # Check if time has run out
+    if time_remaining <= 0:
+        time_remaining = 0
+        running = False
+
+    # Refresh screen
+    pygame.display.flip()
+
+    
+
+# Quit Pygame
+pygame.quit()
+sys.exit()

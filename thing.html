@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #counter {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #clickButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click Counter</h1>
+    <p>Click the button to increase the counter:</p>
+    <p id="counter">0</p>
+    <button id="clickButton">Click Me</button>
+
+    <script>
+        // Function to handle button click event
+        function incrementCounter() {
+            // Get the current counter value
+            var counterValue = parseInt(document.getElementById('counter').textContent);
+            
+            // Increment the counter value by 1
+            counterValue += 1;
+            
+            // Update the counter display
+            document.getElementById('counter').textContent = counterValue;
+        }
+        
+        // Add click event listener to the button
+        document.getElementById('clickButton').addEventListener('click', incrementCounter);
+    </script>
+</body>
+</html>
