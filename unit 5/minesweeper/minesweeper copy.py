@@ -18,7 +18,7 @@ MOVE_COOLDOWN = 10
 game_state = 'running'
 
 #get all mine coords
-all_coords = [(x,y) for x in range(10) for y in range(10)]
+all_coords = [(x,y) for x in range(10) for y in range(10) if not (x <= 2 and y <= 2)]
 mine_coords_list = random.sample(all_coords,k=MINE_COUNT)
 
 #import images
@@ -26,8 +26,8 @@ mine_image = pygame.image.load("unit 5\minesweeper\mine.png")
 mine_image = pygame.transform.scale(mine_image, (50,50))
 
 #init grid variables
-closed_coords = [(x,y) for x in range(10) for y in range(10)]
-open_coords = []
+closed_coords = [(x,y) for x in range(10) for y in range(10) if (x,y)!=(0,0)]
+open_coords = [(0,0)]
 
 
 #init player move variables
@@ -49,7 +49,8 @@ def get_near_mine_count():
         mine_count_list.append(mine_count)
     return mine_count_list, all_grid_spaces
 
-#draw_grid - 
+#draw_grid - draws all grid spaces including open ones, changes color based on player coords, 
+#puts the number of sorrounding mines on the grids
 def draw_grid(player_coords, closed_coords, open_coords,mine_coords_list):
     for x,y in closed_coords:
         if (x+y)%2==0:
@@ -64,13 +65,27 @@ def draw_grid(player_coords, closed_coords, open_coords,mine_coords_list):
                 pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
  
     for x,y in open_coords:
-        if [x,y]==player_coords:
-            pygame.draw.rect(screen,'seashell3',pygame.Rect(x*50,y*50,50,50))
-        grid_space_number = all_grid_spaces.index((x,y))
-        mine_number_text = font.render(str(mine_count_list[grid_space_number]),True,'BLACK')
-        screen.blit(mine_number_text, (x*50,y*50))
-        clear_adjacent_tiles(x,y)
+        if (x,y) in mine_coords_list:
+            if (x+y)%2==0:
+                if [x,y]==player_coords:
+                    pygame.draw.rect(screen,'lightgreen',pygame.Rect(x*50,y*50,50,50))
+                else:
+                    pygame.draw.rect(screen,'chartreuse2',pygame.Rect(x*50,y*50,50,50))
+            else:
+                if [x,y]==player_coords:
+                    pygame.draw.rect(screen,'seagreen3',pygame.Rect(x*50,y*50,50,50))
+                else:
+                    pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
+        else:
+            if [x,y]==player_coords:
+                pygame.draw.rect(screen,'seashell3',pygame.Rect(x*50,y*50,50,50))
+            grid_space_number = all_grid_spaces.index((x,y))
+            mine_number_text = font.render(str(mine_count_list[grid_space_number]),True,'BLACK')
+            screen.blit(mine_number_text, (x*50,y*50))
+            clear_adjacent_tiles(x,y)
 
+#get_user_input - moves player_coords based on arrows, 
+#if space is pressed puts the coord in open coord and removes from closed coords
 def get_user_input(move_timer):
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP] and move_timer<=0 and not player_coords[1] <=0:
@@ -93,41 +108,45 @@ def get_user_input(move_timer):
             open_coords.append((player_coords[0], player_coords[1]))
         except:
             pass
-    
-    #handle player clicking
-    if keys[pygame.K_SPACE]:
-        try:
-            closed_coords.remove((player_coords[0], player_coords[1]))
-            open_coords.append((player_coords[0], player_coords[1]))
-            print('here')
-        except:
-            pass
+
     return move_timer, player_coords, closed_coords, open_coords
 
-def draw_mines(mine_coords_list, open_coords):
+#draw_mines - loops through all open tiles and sets game state to lost if a mine is open,
+#draws all mines if game is lost
+def game_state_control(mine_coords_list, open_coords):
     game_state = 'running'
-    mine_clicked = False
+
+    #check if a mine is on an open tilec
     for gone_coord in open_coords:
-        for mine_coord in mine_coords_list:
-            if mine_coord==gone_coord:
-                mine_clicked = True
-    
-    if mine_clicked:
-        for mine_coord in mine_coords_list:
-            screen.blit(mine_image,(mine_coord[0]*50, mine_coord[1]*50))
-        game_state = 'lost'
+        if gone_coord in mine_coords_list:
+            game_state = 'lost'
+    if len(closed_coords)==len(mine_coords_list):
+        game_state = 'won'
     return game_state
 
+#clear all tiles around an x and y coord (my grid coord not pygame coords)
 def clear_adjacent_tiles(x,y):
     sorrounding_coords = [(coordx,coordy) for coordx in range(x-1,x+2) for coordy in range (y-1,y+ 2) if (coordx,coordy)!=(x,y)]
-    for coord in sorrounding_coords:
-        if mine_count_list[all_grid_spaces.index((x,y))]==0:
+    if mine_count_list[all_grid_spaces.index((x,y))]==0:
+        for coord in sorrounding_coords:
             try:
                 closed_coords.remove(coord)
                 open_coords.append(coord)
             except:
                 pass
+    else:
+        for coord in sorrounding_coords:
+            try:
+                if mine_count_list[all_grid_spaces.index((coord))]==0 and coord not in mine_coords_list:
+                    try:
+                        closed_coords.remove(coord)
+                        open_coords.append(coord)
+                    except:
+                        pass
+            except:
+                pass
 
+#calls get_user_input(), draw_grid(), and draw_mines()
 def game_running(move_timer):
     #handle player inputs
     move_timer, player_coords, closed_coords, open_coords = get_user_input(move_timer)
@@ -136,8 +155,25 @@ def game_running(move_timer):
     draw_grid(player_coords, closed_coords, open_coords, mine_coords_list)
 
     #draw mines
-    game_state = draw_mines(mine_coords_list, open_coords)
+    game_state = game_state_control(mine_coords_list, open_coords)
     return move_timer, game_state
+
+def game_loose():    
+    for x,y in closed_coords:
+        if (x+y)%2==0:
+            pygame.draw.rect(screen,'chartreuse2',pygame.Rect(x*50,y*50,50,50))
+        else:
+            pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
+    
+    #display all mines
+    for mine_coord in mine_coords_list:
+        screen.blit(mine_image,(mine_coord[0]*50, mine_coord[1]*50))
+
+    #display "you lost" text
+    you_lost_text = font.render(f'YOU LOST! YOU HAD {len(closed_coords)-len(mine_coords_list)} TILES REMAINING!', True, 'BLACK')
+    screen.blit(you_lost_text, (50,50))
+
+
 
 mine_count_list, all_grid_spaces = get_near_mine_count()
 running = True
@@ -150,7 +186,11 @@ while running:
 
     if game_state == 'running':
         move_timer, game_state = game_running(move_timer)
-    move_timer, game_state = game_running(move_timer)
+    elif game_state=='lost':
+        game_loose()
     
     pygame.time.Clock().tick(30)
     pygame.display.update()
+
+'''for mine_coord in mine_coords_list:
+        screen.blit(mine_image,(mine_coord[0]*50, mine_coord[1]*50))'''

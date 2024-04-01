@@ -18,15 +18,16 @@ MOVE_COOLDOWN = 10
 game_state = 'running'
 
 #get all mine coords
-all_coords = [(x,y) for x in range(10) for y in range(10)]
+all_coords = [(x,y) for x in range(10) for y in range(10) if not (x <= 2 and y <= 2)]
 mine_coords_list = random.sample(all_coords,k=MINE_COUNT)
 
 #import images
-mine_image = pygame.image.load("flappy_bird_graphics/bird_wings_down.png")
+mine_image = pygame.image.load("unit 5\minesweeper\mine.png")
+mine_image = pygame.transform.scale(mine_image, (50,50))
 
 #init grid variables
-closed_coords = [(x,y) for x in range(10) for y in range(10)]
-open_coords = []
+closed_coords = [(x,y) for x in range(10) for y in range(10) if (x,y)!=(0,0)]
+open_coords = [(0,0)]
 
 
 #init player move variables
@@ -47,7 +48,9 @@ def get_near_mine_count():
                 mine_count +=1
         mine_count_list.append(mine_count)
     return mine_count_list, all_grid_spaces
-#draw_grid - 
+
+#draw_grid - draws all grid spaces including open ones, changes color based on player coords, 
+#puts the number of sorrounding mines on the grids
 def draw_grid(player_coords, closed_coords, open_coords,mine_coords_list):
     for x,y in closed_coords:
         if (x+y)%2==0:
@@ -62,13 +65,27 @@ def draw_grid(player_coords, closed_coords, open_coords,mine_coords_list):
                 pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
  
     for x,y in open_coords:
-        if [x,y]==player_coords:
-            pygame.draw.rect(screen,'seashell3',pygame.Rect(x*50,y*50,50,50))
-        grid_space_number = all_grid_spaces.index((x,y))
-        mine_number_text = font.render(str(mine_count_list[grid_space_number]),True,'BLACK')
-        screen.blit(mine_number_text, (x*50,y*50))
-        clear_adjacent_tiles(x,y)
+        if (x,y) in mine_coords_list:
+            if (x+y)%2==0:
+                if [x,y]==player_coords:
+                    pygame.draw.rect(screen,'lightgreen',pygame.Rect(x*50,y*50,50,50))
+                else:
+                    pygame.draw.rect(screen,'chartreuse2',pygame.Rect(x*50,y*50,50,50))
+            else:
+                if [x,y]==player_coords:
+                    pygame.draw.rect(screen,'seagreen3',pygame.Rect(x*50,y*50,50,50))
+                else:
+                    pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
+        else:
+            if [x,y]==player_coords:
+                pygame.draw.rect(screen,'seashell3',pygame.Rect(x*50,y*50,50,50))
+            grid_space_number = all_grid_spaces.index((x,y))
+            mine_number_text = font.render(str(mine_count_list[grid_space_number]),True,'BLACK')
+            screen.blit(mine_number_text, (x*50,y*50))
+            clear_adjacent_tiles(x,y)
 
+#get_user_input - moves player_coords based on arrows, 
+#if space is pressed puts the coord in open coord and removes from closed coords
 def get_user_input(move_timer):
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP] and move_timer<=0 and not player_coords[1] <=0:
@@ -91,15 +108,7 @@ def get_user_input(move_timer):
             open_coords.append((player_coords[0], player_coords[1]))
         except:
             pass
-    
-    #handle player clicking
-    if keys[pygame.K_SPACE]:
-        try:
-            closed_coords.remove((player_coords[0], player_coords[1]))
-            open_coords.append((player_coords[0], player_coords[1]))
-            print('here')
-        except:
-            pass
+
     return move_timer, player_coords, closed_coords, open_coords
 
 def draw_mines(mine_coords_list, open_coords):
