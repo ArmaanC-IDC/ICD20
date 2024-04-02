@@ -224,7 +224,6 @@ def x_y_speeds(x,y,ang, speed):
     y_speed = speed * -1 *(math.sin(ang))
     return x_speed, y_speed, rect
 while running:
-
     screen.fill('white')
     timer_1 = font.render(f"Time Before Asteroid Storm: {int(Storm_Timer)}", True, 'black')
     timer_2 = font.render(f"Time Before the Storm Ends: {int(active_timer)}", True, 'black')

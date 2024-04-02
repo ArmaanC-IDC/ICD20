@@ -2,6 +2,7 @@ import pygame
 import random
 import time
 pygame.init()
+pygame.mixer.init()
 
 #10 X 10 grid
 #init pygame screen
@@ -12,7 +13,7 @@ font = pygame.font.Font(None,80)
 
 #init game constants
 MINE_COUNT = 15
-MOVE_COOLDOWN = 10
+MOVE_COOLDOWN = 4
 
 #init game variables
 game_state = 'running'
@@ -24,6 +25,12 @@ mine_coords_list = random.sample(all_coords,k=MINE_COUNT)
 #import images
 mine_image = pygame.image.load("unit 5\minesweeper\mine.png")
 mine_image = pygame.transform.scale(mine_image, (50,50))
+
+#import sounds
+game_loose_sound = pygame.mixer.Sound('unit 5\minesweeper\game_lose.wav')
+game_win_sound = pygame.mixer.Sound('unit 5\minesweeper\game_win.mp3')
+background_music = pygame.mixer.music.load('unit 5/minesweeper/background_music.mp3')
+pygame.mixer.music.set_volume(0.05)
 
 #init grid variables
 closed_coords = [(x,y) for x in range(10) for y in range(10) if (x,y)!=(0,0)]
@@ -66,7 +73,7 @@ def draw_grid(player_coords, closed_coords, open_coords,mine_coords_list):
  
     for x,y in open_coords:
         if (x,y) in mine_coords_list:
-            if (x+y)%2==0:
+            '''if (x+y)%2==0:
                 if [x,y]==player_coords:
                     pygame.draw.rect(screen,'lightgreen',pygame.Rect(x*50,y*50,50,50))
                 else:
@@ -75,7 +82,7 @@ def draw_grid(player_coords, closed_coords, open_coords,mine_coords_list):
                 if [x,y]==player_coords:
                     pygame.draw.rect(screen,'seagreen3',pygame.Rect(x*50,y*50,50,50))
                 else:
-                    pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
+                    pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))'''
         else:
             if [x,y]==player_coords:
                 pygame.draw.rect(screen,'seashell3',pygame.Rect(x*50,y*50,50,50))
@@ -120,8 +127,11 @@ def game_state_control(mine_coords_list, open_coords):
     for gone_coord in open_coords:
         if gone_coord in mine_coords_list:
             game_state = 'lost'
+            pygame.mixer.Sound.play(game_loose_sound)
+
     if len(closed_coords)==len(mine_coords_list):
         game_state = 'won'
+        pygame.mixer.Sound.play(game_win_sound)
     return game_state
 
 #clear all tiles around an x and y coord (my grid coord not pygame coords)
@@ -158,23 +168,39 @@ def game_running(move_timer):
     game_state = game_state_control(mine_coords_list, open_coords)
     return move_timer, game_state
 
-def game_loose():    
+#handles everything that happens once the game is done (won or lost)
+def game_over():
+    pygame.mixer.music.stop()
     for x,y in closed_coords:
         if (x+y)%2==0:
             pygame.draw.rect(screen,'chartreuse2',pygame.Rect(x*50,y*50,50,50))
         else:
             pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
+
+    for x,y in open_coords:
+        grid_space_number = all_grid_spaces.index((x,y))
+        mine_number_text = font.render(str(mine_count_list[grid_space_number]),True,'BLACK')
+        screen.blit(mine_number_text, (x*50,y*50))
+        if (x,y) in mine_coords_list:
+            if (x+y)%2==0:
+                pygame.draw.rect(screen,'chartreuse2',pygame.Rect(x*50,y*50,50,50))
+            else:
+                pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
     
     #display all mines
     for mine_coord in mine_coords_list:
         screen.blit(mine_image,(mine_coord[0]*50, mine_coord[1]*50))
 
-    #display "you lost" text
-    you_lost_text = font.render(f'YOU LOST! YOU HAD {len(closed_coords)-len(mine_coords_list)} TILES REMAINING!', True, 'BLACK')
-    screen.blit(you_lost_text, (50,50))
+#handles everything that happens once the game is lost
+def game_loose():    
+    game_over()
+    
 
-
-
+#handles everything that happens once the game is won
+def game_won():
+    game_over()
+    
+pygame.mixer.music.play(-1)
 mine_count_list, all_grid_spaces = get_near_mine_count()
 running = True
 while running:
@@ -188,9 +214,14 @@ while running:
         move_timer, game_state = game_running(move_timer)
     elif game_state=='lost':
         game_loose()
+    elif game_state=='won':
+        game_won()
+
+    for mine_coord in mine_coords_list:
+        screen.blit(mine_image,(mine_coord[0]*50, mine_coord[1]*50))
+    
+    
+
     
     pygame.time.Clock().tick(30)
     pygame.display.update()
-
-'''for mine_coord in mine_coords_list:
-        screen.blit(mine_image,(mine_coord[0]*50, mine_coord[1]*50))'''
