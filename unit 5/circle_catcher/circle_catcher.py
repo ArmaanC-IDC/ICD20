@@ -24,7 +24,6 @@ circles = []
 
 # Function to create new circles
 def create_circle():
-    circles.clear()  # Clear existing circles
     radius = random.randint(5, 20)
     color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
     x = random.randint(0, WIDTH - 2*radius)

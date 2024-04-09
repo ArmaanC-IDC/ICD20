@@ -104,6 +104,7 @@ def detanate_asteroids(x_new,y_new,speed,size):
         if y_speed <= 0:
             x_speed -= 1
         print(asteroid_info)
+
 def find_slope(p1,p2):
     largest = 1
     p1[1] = p1[1]*-1
@@ -143,6 +144,7 @@ def add_meteor(speed,size,x,y):
     circle = {'rect': pygame.Rect(x, y, 2*size, 2*size), 'color': 'black', 'radius': size}
     asteroid_info = [circle,astroid_image,x,y,x_speed_meteor,y_speed_meteor,end_height,"h",size]
     asteroids.append(asteroid_info)
+    
 def add_asteroid(lowest,second_lowested,second_highest,highest,boo):
     size = random.randint(10,101)
     checker = random.randint(0,1)
