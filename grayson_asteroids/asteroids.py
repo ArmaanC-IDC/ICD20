@@ -25,7 +25,7 @@ lifes = 3
 bullet_counter = 0
 bomb_counter =0
 space_ship = pygame.image.load('grayson_asteroids/Spaceship.png')
-background = pygame.image.load('grayson_asteroids/background for game.png')
+background = pygame.image.load('grayson_asteroids/Background for game.png')
 background = pygame.transform.scale(background,(900,900))
 #Not greater than positive 180
 angle = -90
@@ -76,8 +76,8 @@ score = 0
 end_timer = 0
 bullet_type = None
 shooter_loop = True
-burst_counter = 0
-b_divide = 2
+burst_counter = 3
+b_divide = 3
 power_up_choice_loop = True
 power_up_choice = None
 speed_boosts = 3
@@ -104,7 +104,7 @@ def create_bullet(x,y,ang,speed,boo):
         ang = math.radians(ang)
         x_speed = speed * (math.cos(ang))
         y_speed = speed * -1 *(math.sin(ang))
-        bullet_image = pygame.image.load('grayson_asteroids/Bullet.png')
+        bullet_image = pygame.image.load('grayson_asteroids/Good Bullet.png')
         bullet_image = pygame.transform.scale(bullet_image,(10,10))
         circle = pygame.Rect(x,y,10,10)
         bullet_info = [circle,bullet_image,x,y,x_speed,y_speed,boo,0]
@@ -115,7 +115,7 @@ def create_bullet(x,y,ang,speed,boo):
         ang = math.radians(ang)
         x_speed = speed * (math.cos(ang))
         y_speed = speed * -1 *(math.sin(ang))
-        bullet_image = pygame.image.load('grayson_asteroids/Bullet.png')
+        bullet_image = pygame.image.load('grayson_asteroids/Charged_bullet.png')
         bullet_image = pygame.transform.scale(bullet_image,(20,20))
         circle = pygame.Rect(x,y,10,10)
         bullet_info = [circle,bullet_image,x,y,x_speed,y_speed,boo,0]
@@ -130,22 +130,24 @@ def detanate_mine(x,y,boo):
             ang += 1
             x_speed = 2 *math.cos(ang)
             y_speed = 2 * -1 * (math.sin(ang))
-            bullet_image = pygame.image.load('grayson_asteroids/Bullet.png')
+            bullet_image = pygame.image.load('grayson_asteroids/Good Bullet.png')
             bullet_image = pygame.transform.scale(bullet_image,(10,10))
             circle = pygame.Rect(x,y,10,10)
             bullet_info = [circle,bullet_image,x,y,x_speed,y_speed,False,0]
             bullets.append(bullet_info)
     #used for exploding bullets
     elif boo == True:
-        for b  in range(6):
-            ang += 1
-            x_speed = 2 *math.cos(ang)
-            y_speed = 2 * -1 * (math.sin(ang))
-            bullet_image = pygame.image.load('grayson_asteroids/Bullet.png')
+        ang = 90
+        for b in range(6):
+            x_speed = 0.75 *math.cos(ang)
+            y_speed = 0.75 * -1 * (math.sin(ang))
+            bullet_image = pygame.image.load('grayson_asteroids/Good Bullet.png')
             bullet_image = pygame.transform.scale(bullet_image,(10,10))
             circle = pygame.Rect(x,y,10,10)
-            bullet_info = [circle,bullet_image,x,y,x_speed,y_speed,False,0]
+            bullet_info = [circle,bullet_image,x,y,x_speed,y_speed,False]
             bullets.append(bullet_info)
+          
+            ang += 45
 def detanate_asteroids(x_new,y_new,speed,size):
     # Makes the asteroids explode when they are destroyed by bullets
     random_choice = random.randint(0,1)
@@ -158,7 +160,7 @@ def detanate_asteroids(x_new,y_new,speed,size):
     for x in range(4):
         astroid_image = pygame.image.load('grayson_asteroids/Asteroid 1.png')
         astroid_image = pygame.transform.scale(astroid_image,(size,size))
-        circle = {'rect': pygame.Rect(x_new, y_new, 2*size, 2*size), 'color': 'black', 'radius': size}
+        circle = {'rect': pygame.Rect(x_new, y_new, size, size), 'color': 'black', 'radius': size}
         asteroid_info = [circle,astroid_image,x_new,y_new,x_speed,y_speed]
         if y_speed > 0:
             end_height = 800
@@ -264,7 +266,7 @@ def add_meteor(speed,size,x,y):
     y_speed_meteor = speed
     x_speed_meteor =  0
     end_height = 810
-    circle = {'rect': pygame.Rect(x, y, 2*size, 2*size), 'color': 'black', 'radius': size}
+    circle = {'rect': pygame.Rect(x, y, size, size), 'color': 'black', 'radius': size}
     asteroid_info = [circle,astroid_image,x,y,x_speed_meteor,y_speed_meteor,end_height,"h",size]
     asteroids.append(asteroid_info)
 def add_asteroid(lowest,second_lowested,second_highest,highest,boo):
@@ -296,7 +298,7 @@ def add_asteroid(lowest,second_lowested,second_highest,highest,boo):
             end_width = -10
     astroid_image = pygame.image.load('grayson_asteroids/Asteroid 1.png')
     astroid_image = pygame.transform.scale(astroid_image,(size,size))
-    circle = {'rect': pygame.Rect(x, y, 2*size, 2*size), 'color': 'black', 'radius': size}
+    circle = {'rect': pygame.Rect(x, y, size, size), 'color': 'black', 'radius': size}
     asteroid_info = [circle,astroid_image,x,y,x_speed_asteroid,y_speed_asteroid]
     if end_width != None:
         asteroid_info.append(end_width)
@@ -313,7 +315,7 @@ def create_mine(x,y):
     for m in range(6):
         x_speed = 0.75 *math.cos(ang)
         y_speed = 0.75 * -1 * (math.sin(ang))
-        bullet_image = pygame.image.load('grayson_asteroids/Bullet.png')
+        bullet_image = pygame.image.load('grayson_asteroids/Mine.png')
         bullet_image = pygame.transform.scale(bullet_image,(25,25))
         circle = pygame.Rect(x,y,10,10)
         bullet_info = [circle,bullet_image,x,y,x_speed,y_speed,False]
@@ -329,7 +331,7 @@ def create_explosive_bullet(x,y,ang):
     ang = math.radians(ang)
     x_speed = 5 *math.cos(ang)
     y_speed = 5 * -1 * (math.sin(ang))
-    bullet_image = pygame.image.load('grayson_asteroids/Bullet.png')
+    bullet_image = pygame.image.load('grayson_asteroids/Good Bullet.png')
     bullet_image = pygame.transform.scale(bullet_image,(10,10))
     circle = pygame.Rect(x,y,10,10)
     bullet_info = [circle,bullet_image,x,y,x_speed,y_speed,True]
@@ -354,7 +356,7 @@ def create_bomb(x,y,speed,ang):
         ang += 1
         x_speed = speed *math.cos(ang)
         y_speed = speed * -1 * (math.sin(ang))
-        bullet_image = pygame.image.load('grayson_asteroids/Bullet.png')
+        bullet_image = pygame.image.load('grayson_asteroids/Good Bullet.png')
         bullet_image = pygame.transform.scale(bullet_image,(10,10))
         circle = pygame.Rect(x,y,10,10)
         bullet_info = [circle,bullet_image,x,y,x_speed,y_speed,False,0]
@@ -799,10 +801,10 @@ while running:
                 #creates the player's hitbox
                 hit_box = pygame.Rect(player_x,player_y,25,25)
                 #Resets angle so it never is higher or lower than 180 or -180
-                if angle > 180:
+                '''if angle > 180:
                     angle = -180
                 if angle < -180:
-                    angle = 180
+                    angle = 180'''
                 #checks for collisions with asteroids in bullets
                 for b in range(len(bullets)-1,-1,-1):
                  if bullets[b][6] == False:

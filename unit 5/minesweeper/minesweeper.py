@@ -5,9 +5,7 @@ pygame.init()
 pygame.mixer.init()
 
 #CHANGES TO ADD
-#DIFFICULTY LEVELS (5X5 grid, 10X10, 15X15)
-#colored numbers
-#flagging system
+#TIMER
 
 
 #init pygame screen
@@ -15,6 +13,7 @@ WIDTH,HEIGHT = 500,500
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("MINESWEEPER")
 clock = pygame.time.Clock()
+time = 0
 font = pygame.font.Font(None,80)
 font2 = pygame.font.Font(None,40)
 
@@ -31,6 +30,9 @@ mine_image = pygame.transform.scale(mine_image, (50,50))
 
 flag_image = pygame.image.load("unit 5/minesweeper/flag.png")
 flag_image = pygame.transform.scale(flag_image,(50,50))
+
+question_image = pygame.image.load("unit 5/minesweeper/question.png")
+question_image = pygame.transform.scale(question_image,(50,50))
 
 #import sounds
 game_loose_sound = pygame.mixer.Sound('unit 5\minesweeper\game_lose.mp3')
@@ -58,9 +60,20 @@ def get_difficulty_level():
         arrow_key_movement_text = font2.render("move around - arrow keys", True, 'BLACK')
         screen.blit(arrow_key_movement_text, (50,50))
 
+        easy_text = font2.render('EASY', True, 'BLACK')
+        screen.blit(easy_text, (50, 400))
+
+        medium_text = font2.render('MEDIUM', True, 'BLACK')
+        screen.blit(medium_text, (200, 400))
+
+        hard_text = font2.render('HARD', True, 'BLACK')
+        screen.blit(hard_text, (350, 400))
+
+        
+
         #easy mode
         if pygame.Rect(50,250,100,100).collidepoint(mouse_pos) and mouse_click[0]:
-            grid_size = 7
+            grid_size = 8
             mine_count = 10
             running = False
 
@@ -72,7 +85,7 @@ def get_difficulty_level():
 
         #hard
         elif pygame.Rect(350,250,100,100).collidepoint(mouse_pos) and mouse_click[0]:
-            grid_size = 15
+            grid_size = 14
             mine_count = 35
             running = False
         pygame.display.update()
@@ -88,15 +101,16 @@ def start_game():
 
     closed_coords = [(x,y) for x in range(grid_size) for y in range(grid_size) if (x,y)!=(0,0)]
     open_coords = [(x,y) for x in range(grid_size) for y in range(grid_size) if (x <= 2 and y <= 2)]
-    '''open_coords = [i for i in all_coords if i not in mine_coords_list]'''
     #init flagging variables
     flagged_coords = []
+    questioned_coords = []
+
     #init player move variables
     player_coords = [0,0]
     move_timer = MOVE_COOLDOWN
     unchecked_coords = [(x,y) for x in range(grid_size) for y in range(grid_size) if (x <= 2 and y <= 2)]
     numbered_coords = [(x,y) for x in range(grid_size) for y in range(grid_size) if (x <= 2 and y <= 2)]
-    return closed_coords, open_coords, flagged_coords, player_coords, move_timer, grid_size, mine_coords_list, unchecked_coords, numbered_coords
+    return closed_coords, open_coords, flagged_coords, player_coords, move_timer, grid_size, mine_coords_list, unchecked_coords, numbered_coords, questioned_coords
 
 #get_near_mine_count - loops through all tiles and assigns them a number (the number of mines next to them)
 def get_near_mine_count():
@@ -113,7 +127,7 @@ def get_near_mine_count():
     return mine_count_list, all_grid_spaces
 
 #call start_game
-closed_coords, open_coords, flagged_coords, player_coords, move_timer,grid_size, mine_coords_list, unchecked_coords, numbered_coords = start_game()
+closed_coords, open_coords, flagged_coords, player_coords, move_timer,grid_size, mine_coords_list, unchecked_coords, numbered_coords, questioned_coords = start_game()
 mine_count_list, all_grid_spaces = get_near_mine_count()
 
 #define main game functions
@@ -179,6 +193,9 @@ def draw_grid(player_coords, closed_coords, open_coords,mine_coords_list):
     for x,y in flagged_coords:
         screen.blit(flag_image,(x*50,y*50))
 
+    for x,y in questioned_coords:
+        screen.blit(question_image,(x*50,y*50))
+
 #get_user_input - moves player_coords based on arrows, 
 #if space is pressed puts the coord in open coord and removes from closed coords
 #handles flagging system
@@ -215,7 +232,17 @@ def get_user_input(move_timer):
             flagged_coords.remove((player_coords[0],player_coords[1]))
         except:
             pass
-    return move_timer, player_coords, closed_coords#, open_coords
+
+    if keys[pygame.K_f]:
+        questioned_coords.append((player_coords[0], player_coords[1]))
+
+    if keys[pygame.K_g]:
+        try:
+            questioned_coords.remove((player_coords[0],player_coords[1]))
+        except:
+            pass
+
+    return move_timer, player_coords, closed_coords
 
 #draw_mines - loops through all open tiles and sets game state to lost if a mine is open,
 #draws all mines if game is lost
@@ -259,7 +286,7 @@ def clear_adjacent_tiles(x,y):
                 pass
 
 #calls get_user_input(), draw_grid(), and draw_mines()
-def game_running(move_timer):
+def game_running(move_timer, time):
     
     #handle player inputs
     #move_timer, player_coords, closed_coords, open_coords = get_user_input(move_timer)
@@ -271,38 +298,35 @@ def game_running(move_timer):
 
     #draw mines
     game_state = game_state_control(mine_coords_list, open_coords)
-    return move_timer, game_state
+
+    time+=clock.get_time()/1000
+    return move_timer, game_state, time
 
 #handles everything that happens once the game is lost
-def game_loose():    
+def game_loose():  
     pygame.mixer.music.stop()
+
     for x,y in closed_coords:
         if (x+y)%2==0:
             pygame.draw.rect(screen,'chartreuse2',pygame.Rect(x*50,y*50,50,50))
         else:
             pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
-
-    add_color_nums()
     
     #display all mines
     for mine_coord in mine_coords_list:
         screen.blit(mine_image,(mine_coord[0]*50, mine_coord[1]*50))
+
+    end_text = font.render(f"time: {round(time,3)}", True, 'BLACK', 'WHITE')
+    screen.blit(end_text, (((grid_size*50)//2)-150, ((grid_size*50)//2)-25))
     
 #handles everything that happens once the game is won
 def game_won():
     pygame.mixer.music.stop()
-    for x,y in closed_coords:
-        if (x+y)%2==0:
-            pygame.draw.rect(screen,'chartreuse2',pygame.Rect(x*50,y*50,50,50))
-        else:
-            pygame.draw.rect(screen,'chartreuse4',pygame.Rect(x*50,y*50,50,50))
-
-    add_color_nums()
-    
-    #display all mines
+    end_text = font.render(f"time: {round(time,3)}", True, 'BLACK')
+    screen.blit(end_text, (((grid_size*50)//2)-300, ((grid_size*50)//2)-25))
     for mine_coord in mine_coords_list:
         screen.blit(mine_image,(mine_coord[0]*50, mine_coord[1]*50))
-    
+
 pygame.mixer.music.play(-1)
 
 
@@ -317,7 +341,8 @@ while running:
 
 
     if game_state == 'running':
-        move_timer, game_state = game_running(move_timer)
+        move_timer, game_state, time = game_running(move_timer, time)
+        print(time)
     elif game_state=='lost':
         game_loose()
     elif game_state=='won':

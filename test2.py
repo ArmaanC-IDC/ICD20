@@ -1,39 +1,23 @@
-import socket
-import tkinter as tk
-from threading import Thread
+import pygame
+from sys import exit
+WIDTH, HEIGHT = 1000, 700
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+clock = pygame.time.Clock()
 
-def receive_messages():
-    while True:
-        message = client_socket.recv(1024).decode()
-        text_box.insert(tk.END, message + '\n')
+player_y = 10
+running = True
+while running:
+    screen.fill('WHITE')
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            running = False
+            exit()
 
-def send_message(event=None):
-    message = entry.get()
-    entry.delete(0, tk.END)
-    client_socket.send(message.encode())
+    player_y +=1
+    if player_y
+        
+    pygame.draw.circle(screen, 'GREEN', (50, player_y), 10)
 
-def start_server():
-    global client_socket
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('localhost', 9999))
-    server_socket.listen(1)
-    client_socket, _ = server_socket.accept()
-    receive_thread = Thread(target=receive_messages)
-    receive_thread.start()
-
-app = tk.Tk()
-app.title("Computer B")
-
-text_box = tk.Text(app)
-text_box.pack()
-
-entry = tk.Entry(app)
-entry.pack()
-entry.bind("<Return>", send_message)
-
-send_button = tk.Button(app, text="Send", command=send_message)
-send_button.pack()
-
-start_server()
-
-app.mainloop()
+    pygame.display.update()
+    clock.tick(30)
+    

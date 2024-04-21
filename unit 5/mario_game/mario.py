@@ -65,32 +65,31 @@ def handle_mario(mario_speed, mario_y):
     else:
         mario_grounded = False
 
-    player_rect = pygame.Rect(90, mario_y-10, 20, 20)
+    player_rect = pygame.Rect(100, mario_y, 20, 20)
     '''pygame.draw.rect(screen, 'BLACK', player_rect)'''
-    pygame.draw.circle(screen, 'RED', (100, mario_y), 10)
+    pygame.draw.rect(screen, 'RED', pygame.Rect(100, mario_y, 20, 20))
 
     return mario_grounded, mario_y, mario_speed, player_rect
 
 def collisions(game_movement, mario_y, mario_speed):
     for el in pipes:
+        if pipes.index(el)==0:
+            print(el[0]-game_position)
+
         left_rect = pygame.Rect(el[0]-game_position, HEIGHT - el[1]-140, 1, el[1]+150)
         '''pygame.draw.rect(screen, 'BLACK', left_rect)'''
         if player_rect.colliderect(left_rect):
-            print('left side')
             game_movement -= 5
 
         right_rect = pygame.Rect(el[0]-game_position+49, HEIGHT - el[1]-140, 1, el[1]+150)
         '''pygame.draw.rect(screen, 'BLACK', right_rect)'''
         if player_rect.colliderect(right_rect):
-            print('right side')
             game_movement += 5
 
         '''if mario_y>=HEIGHT-el[1]-160 and (el[0]-game_position<=110 and el[0]-game_position>=90):'''
-        if el[0]-game_position<=110 and el[0]-game_position>=90:
-            print('true')
+        if el[0]-game_position+50>=95 and el[0]-game_position<=105 and mario_y>=HEIGHT-el[1]-160:
             mario_y = HEIGHT-el[1]-160
             mario_speed = 0
-
 
     return game_movement, mario_y, mario_speed
 
